@@ -15,9 +15,10 @@ class MutualFundNAVTracker:
         for stock, weight in self.holdings.items():
             try:
                 end_date = datetime.now()
-                start_date = end_date - timedelta(days=2)
+                start_date = end_date - timedelta(days=4)
                 
                 stock_data = yf.download(stock, start=start_date, end=end_date+timedelta(days=1))
+                print(stock_data)
                 
                 if stock_data.empty:
                     st.warning(f"No data available for {stock}")
@@ -26,9 +27,9 @@ class MutualFundNAVTracker:
                 
                 stock_data = stock_data.sort_index()
                 valid_closes = stock_data['Close'].dropna()
-                
+                #monday
                 if len(valid_closes) < 2:
-                    st.warning(f"Insufficient historical data for {stock}")
+                    
                     percent_changes[stock] = 0
                     continue
                 
